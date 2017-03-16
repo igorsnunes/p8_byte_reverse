@@ -41,4 +41,4 @@ test: le
 
 clean:
 		rm -rf $(BIN_DIR)
-		rm -rf *.$(TXT_O)
+		rm -rf *$(TXT_O)
