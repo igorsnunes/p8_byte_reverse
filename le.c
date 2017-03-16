@@ -86,6 +86,7 @@ int main () {
 #else
 #if defined(AP1)
   asm volatile (
+    "li  %[i],0\n\t"
     "li  15,8\n\t"
     "lvsl 1,0,15\n\t"
     "vspltisb 3,0xf\n\t"
