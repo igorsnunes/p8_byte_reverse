@@ -8,13 +8,36 @@
   typedef int64_t base_type;
 #endif
 
+void swap_bytes(unsigned char *input, unsigned char *output, size_t size) {
+
+  for (size_t i = 0; i < size; i++) {
+    base_type *input_cast = (base_type*)input+i;
+    base_type *output_cast = (base_type*)output+i;
+    *output_cast =
+#if defined(INPUT32)
+      (*input_cast & 0xFF000000) >> 24 |
+      (*input_cast & 0x00FF0000) >>  8 |
+      (*input_cast & 0x0000FF00) <<  8 |
+      (*input_cast & 0x000000FF) << 24;
+#else
+      (*input_cast & 0xFF00000000000000ULL) >> 56 |
+      (*input_cast & 0x00FF000000000000ULL) >> 40 |
+      (*input_cast & 0x0000FF0000000000ULL) >> 24 |
+      (*input_cast & 0x000000FF00000000ULL) >>  8 |
+      (*input_cast & 0x00000000FF000000ULL) <<  8 |
+      (*input_cast & 0x0000000000FF0000ULL) << 24 |
+      (*input_cast & 0x000000000000FF00ULL) << 40 |
+      (*input_cast & 0x00000000000000FFULL) << 56;
+#endif
+  }
+}
+
 int main () {
   int SIZE = 10000000, i;
   base_type *in = (base_type*)malloc(sizeof(base_type)*SIZE);
   base_type *out = (base_type*)malloc(sizeof(base_type)*SIZE);
 
   for(i = 0; i < SIZE; i++) in[i] = i;
-
 #ifdef INPUT32
 #if  defined(AP1)
   asm volatile (
@@ -63,6 +86,8 @@ int main () {
     :
     "memory","v0","v1","v3","v4"
     );
+#elif defined(CVERSION)
+  swap_bytes((unsigned char*)in, (unsigned char*)out, SIZE);
 #else
   asm volatile (
     "li  %[i],0\n\t"
@@ -133,6 +158,9 @@ int main () {
     :
     "memory","v0","v1","v3","v4","v5"
     );
+#elif defined(CVERSION)
+  swap_bytes((unsigned char*)in, (unsigned char*)out, SIZE);
+
 #else
   asm volatile (
     "li  %[i],0\n\t"
