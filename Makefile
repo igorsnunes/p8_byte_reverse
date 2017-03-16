@@ -15,20 +15,20 @@ all: le debug
 
 le: $(C_FILES)
 		mkdir -p $(BIN_DIR)
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).AP1.$(OUT) $(FLAGS) -D_INPUT32 -D_AP1
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).AP2.$(OUT) $(FLAGS) -D_INPUT32 -D_AP2
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).$(OUT) $(FLAGS) -D_INPUT32
-		$(CC) $(C_FILES) -o $(BIN_DIR)/AP1.$(OUT) $(FLAGS) -D_AP1
-		$(CC) $(C_FILES) -o $(BIN_DIR)/AP2.$(OUT) $(FLAGS) -D_AP2
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).AP1.$(OUT) $(FLAGS) -DINPUT32 -DAP1
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).AP2.$(OUT) $(FLAGS) -DINPUT32 -DAP2
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(INPUT32).$(OUT) $(FLAGS) -DINPUT32
+		$(CC) $(C_FILES) -o $(BIN_DIR)/AP1.$(OUT) $(FLAGS) -DAP1
+		$(CC) $(C_FILES) -o $(BIN_DIR)/AP2.$(OUT) $(FLAGS) -DAP2
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(OUT) $(FLAGS)
 
 debug:
 		mkdir -p $(BIN_DIR)
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP1.$(OUT) $(DBG_FLAGS) -D_INPUT32 -D_AP1
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP2.$(OUT) $(DBG_FLAGS) -D_INPUT32 -D_AP2
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).$(OUT) $(DBG_FLAGS) -D_INPUT32
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).AP1.$(OUT) $(DBG_FLAGS) -D_AP1
-		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).AP2.$(OUT) $(DBG_FLAGS) -D_AP2
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP1.$(OUT) $(DBG_FLAGS) -DINPUT32 -DAP1
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP2.$(OUT) $(DBG_FLAGS) -DINPUT32 -DAP2
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).$(OUT) $(DBG_FLAGS) -DINPUT32
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).AP1.$(OUT) $(DBG_FLAGS) -DAP1
+		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).AP2.$(OUT) $(DBG_FLAGS) -DAP2
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(OUT) $(DBG_FLAGS)
 
 test: le
