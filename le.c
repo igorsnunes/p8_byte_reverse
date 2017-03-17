@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/types.h>
+#include <unistd.h>
+#include <time.h>
 
 #ifdef INPUT32
   typedef int32_t base_type;
@@ -32,12 +35,21 @@ void swap_bytes(unsigned char *input, unsigned char *output, size_t size) {
   }
 }
 
-int main () {
-  int SIZE = 10000000, i;
-  base_type *in = (base_type*)malloc(sizeof(base_type)*SIZE);
-  base_type *out = (base_type*)malloc(sizeof(base_type)*SIZE);
+int main (int argc, char *argv) {
+  int SIZE_IN =
+#ifdef INPUT32
+1015808
+#else
+516096
+#endif
+  , i;
+  base_type  in[SIZE_IN] __attribute__ ((aligned (16)));
+  base_type out[SIZE_IN] __attribute__ ((aligned (16))) ;
 
-  for(i = 0; i < SIZE; i++) in[i] = i;
+  for (i = 0; i < SIZE_IN; i++) in[i] = i;
+  for (int SIZE = 0; SIZE < SIZE_IN; SIZE = SIZE + SIZE_IN/48) {
+    clock_t t;
+    t = clock();
 #ifdef INPUT32
 #if  defined(AP1)
   asm volatile (
@@ -107,7 +119,6 @@ int main () {
     "memory","r6"
     );
 #endif
-  for (i = 0; i < SIZE;i++)  printf("%d ",out[i]);
 #else
 #if defined(AP1)
   asm volatile (
@@ -180,7 +191,21 @@ int main () {
     "memory","r6"
     );
 #endif
-  for (i = 0; i < SIZE;i++)  printf("%ld ",out[i]);
 #endif
+    t = clock() - t;
+    double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
+    printf("%f seconds\n", time_taken);
+  }
+  char filename[100];
+
+  sprintf(filename, "out.txt.%d", getpid());
+  FILE *file = fopen(filename,"w");
+  for (i = 0; i < SIZE_IN;i++)
+#if defined(INPUT32)
+    fprintf(file, "%d ",out[i]);
+#else
+    fprintf(file, "%ld ",out[i]);
+#endif
+  fclose(file);
   return 0;
 }

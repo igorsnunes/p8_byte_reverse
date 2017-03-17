@@ -8,7 +8,7 @@ OUT=le.o
 INPUT32=input32
 DBG=dbg
 BIN_DIR=./bin
-TXT_O=le.txt
+TXT_O=out.txt
 
 
 all: le debug
@@ -36,15 +36,15 @@ debug:
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(OUT) $(DBG_FLAGS)
 
 test: le
-		./$(BIN_DIR)/$(INPUT32).AP1.$(OUT) > $(INPUT32).AP1.$(TXT_O)
-		./$(BIN_DIR)/$(INPUT32).AP2.$(OUT) > $(INPUT32).AP2.$(TXT_O)
-		./$(BIN_DIR)/$(INPUT32).CVERSION.$(OUT) > $(INPUT32).CVERSION.$(TXT_O)
-		./$(BIN_DIR)/$(INPUT32).$(OUT)     > $(INPUT32).$(TXT_O)
-		./$(BIN_DIR)/AP1.$(OUT) > AP1.$(TXT_O)
-		./$(BIN_DIR)/AP2.$(OUT) > AP2.$(TXT_O)
-		./$(BIN_DIR)/CVERSION.$(OUT) > CVERSION.$(TXT_O)
-		./$(BIN_DIR)/$(OUT)     > $(TXT_O)
+		./$(BIN_DIR)/$(INPUT32).AP1.$(OUT)
+		./$(BIN_DIR)/$(INPUT32).AP2.$(OUT)
+		./$(BIN_DIR)/$(INPUT32).CVERSION.$(OUT)
+		./$(BIN_DIR)/$(INPUT32).$(OUT)
+		./$(BIN_DIR)/AP1.$(OUT)
+		./$(BIN_DIR)/AP2.$(OUT)
+		./$(BIN_DIR)/CVERSION.$(OUT)
+		./$(BIN_DIR)/$(OUT)
 
 clean:
 		rm -rf $(BIN_DIR)
-		rm -rf *$(TXT_O)
+		rm -rf $(TXT_O).*
