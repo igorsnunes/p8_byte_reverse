@@ -47,7 +47,7 @@ int main (int argc, char *argv) {
   base_type out[SIZE_IN] __attribute__ ((aligned (16))) ;
 
   for (i = 0; i < SIZE_IN; i++) in[i] = i;
-  for (int SIZE = 0; SIZE < SIZE_IN; SIZE = SIZE + SIZE_IN/48) {
+  for (int SIZE = SIZE_IN/112; SIZE < SIZE_IN; SIZE = SIZE + SIZE_IN/112) {
     clock_t t;
     t = clock();
 #ifdef INPUT32
@@ -194,7 +194,7 @@ int main (int argc, char *argv) {
 #endif
     t = clock() - t;
     double time_taken = ((double)t)/CLOCKS_PER_SEC; // in seconds
-    printf("%f seconds\n", time_taken);
+    printf("%d %f\n", SIZE, time_taken);
   }
   char filename[100];
 

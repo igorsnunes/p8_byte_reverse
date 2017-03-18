@@ -1,4 +1,4 @@
-.PHONY: all le debug clean
+.PHONY: all le debug clean test
 
 CC=gcc
 C_FILES=le.c
@@ -24,7 +24,7 @@ le: $(C_FILES)
 		$(CC) $(C_FILES) -o $(BIN_DIR)/CVERSION.$(OUT) $(FLAGS) -DCVERSION
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(OUT) $(FLAGS)
 
-debug:
+debug: $(C_FILES)
 		mkdir -p $(BIN_DIR)
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP1.$(OUT) $(DBG_FLAGS) -DINPUT32 -DAP1
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(INPUT32).AP2.$(OUT) $(DBG_FLAGS) -DINPUT32 -DAP2
@@ -36,15 +36,11 @@ debug:
 		$(CC) $(C_FILES) -o $(BIN_DIR)/$(DBG).$(OUT) $(DBG_FLAGS)
 
 test: le
-		./$(BIN_DIR)/$(INPUT32).AP1.$(OUT)
-		./$(BIN_DIR)/$(INPUT32).AP2.$(OUT)
-		./$(BIN_DIR)/$(INPUT32).CVERSION.$(OUT)
-		./$(BIN_DIR)/$(INPUT32).$(OUT)
-		./$(BIN_DIR)/AP1.$(OUT)
-		./$(BIN_DIR)/AP2.$(OUT)
-		./$(BIN_DIR)/CVERSION.$(OUT)
-		./$(BIN_DIR)/$(OUT)
+		sh plot_results.sh "32-bits-byte-reverse-op"  $(BIN_DIR)/$(INPUT32).AP1.$(OUT) $(BIN_DIR)/$(INPUT32).AP2.$(OUT) $(BIN_DIR)/$(INPUT32).CVERSION.$(OUT) $(BIN_DIR)/$(INPUT32).$(OUT)
+		sh plot_results.sh "64-bits-byte-reverse-op"  $(BIN_DIR)/AP1.$(OUT) $(BIN_DIR)/AP2.$(OUT) $(BIN_DIR)/CVERSION.$(OUT) $(BIN_DIR)/$(OUT)
 
 clean:
 		rm -rf $(BIN_DIR)
 		rm -rf $(TXT_O).*
+		rm -rf *.dat
+		rm -rf *.png
