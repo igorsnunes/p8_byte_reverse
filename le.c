@@ -51,7 +51,7 @@ int main (int argc, char *argv) {
     clock_t t;
     t = clock();
 #ifdef INPUT32
-#if  defined(AP1)
+#if  defined(VPERM)
   asm volatile (
     "li  %[i],0\n\t"
     "li  15,8\n\t"
@@ -74,7 +74,7 @@ int main (int argc, char *argv) {
     :
     "memory","v0","r15","v1","v3"
     );
-#elif defined(AP2)
+#elif defined(ROTATE)
   asm volatile (
     "li  %[i],0\n\t"
     "vspltisw 1,8\n\t"
@@ -120,7 +120,7 @@ int main (int argc, char *argv) {
     );
 #endif
 #else
-#if defined(AP1)
+#if defined(VPERM)
   asm volatile (
     "li  %[i],0\n\t"
     "li  15,8\n\t"
@@ -143,7 +143,7 @@ int main (int argc, char *argv) {
     :
     "memory","v0","r15","v1","v3"
     );
-#elif defined(AP2)
+#elif defined(ROTATE)
   asm volatile (
     "li  %[i],0\n\t"
     "vspltisw 1,8\n\t"
